@@ -3947,12 +3947,12 @@ let newMediaList = [];
 function handleNewMediaFile(input) {
   Array.from(input.files).forEach(file => {
     if (file.size > 50*1024*1024) { showToast('File too large — max 50MB'); return; }
-    const reader = new FileReader();
-    reader.onload = e => {
-      newMediaList.push({src: e.target.result, type: file.type.startsWith('video') ? 'video' : 'image'});
-      renderNewMediaThumbs();
-    };
-    reader.readAsDataURL(file);
+   const storageRef = firebase.storage().ref();
+const fileRef = storageRef.child('products/' + Date.now() + '_' + file.name);
+fileRef.put(file).then(snapshot => snapshot.ref.getDownloadURL()).then(url => {
+  newMediaList.push({src: url, type: file.type.startsWith('video') ? 'video' : 'image'});
+  renderNewMediaThumbs();
+}).catch(e => console.warn('Upload failed', e));
   });
 }
 function handleNewMediaDrop(e) {
@@ -3989,9 +3989,12 @@ function removeNewMedia(i) { newMediaList.splice(i, 1); renderNewMediaThumbs(); 
 let qcSubmitMedia = [];
 function handleQcPhotoFile(input) {
   Array.from(input.files).forEach(file => {
-    const reader = new FileReader();
-    reader.onload = e => { qcSubmitMedia.push({src:e.target.result, type: file.type.startsWith('video')?'video':'image'}); renderQcSubmitThumbs(); };
-    reader.readAsDataURL(file);
+   const storageRef = firebase.storage().ref();
+const fileRef = storageRef.child('products/' + Date.now() + '_' + file.name);
+fileRef.put(file).then(snapshot => snapshot.ref.getDownloadURL()).then(url => {
+  newMediaList.push({src: url, type: file.type.startsWith('video') ? 'video' : 'image'});
+  renderNewMediaThumbs();
+}).catch(e => console.warn('Upload failed', e));
   });
 }
 function handleQcPhotoDrop(e) {
@@ -4016,9 +4019,12 @@ function renderQcSubmitThumbs() {
 let qeMediaList = [];
 function handleQeMediaFile(input) {
   Array.from(input.files).forEach(file => {
-    const reader = new FileReader();
-    reader.onload = e => { qeMediaList.push({src:e.target.result, type:file.type.startsWith('video')?'video':'image'}); renderQeThumbs(); };
-    reader.readAsDataURL(file);
+    const storageRef = firebase.storage().ref();
+const fileRef = storageRef.child('products/' + Date.now() + '_' + file.name);
+fileRef.put(file).then(snapshot => snapshot.ref.getDownloadURL()).then(url => {
+  newMediaList.push({src: url, type: file.type.startsWith('video') ? 'video' : 'image'});
+  renderNewMediaThumbs();
+}).catch(e => console.warn('Upload failed', e));
   });
 }
 function handleQeMediaDrop(e) {
