@@ -1955,7 +1955,7 @@ if (typeof FIREBASE_CONFIG === 'undefined') {
 }
 let db = null;
 let firestoreEnabled = false;
-
+let _isSavingToFirestore = false;
 function isFirebaseConfigValid() {
   return FIREBASE_CONFIG &&
     FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey !== 'YOUR_API_KEY' &&
@@ -2020,8 +2020,9 @@ async function subscribeRemoteProducts() {
   if (!firestoreEnabled || !db) return;
   try {
     db.collection('products').onSnapshot(snapshot => {
-      if (snapshot.empty) return;
-      updateProductsFromSnapshot(snapshot);
+  if (snapshot.empty) return;
+  if (_isSavingToFirestore) return;
+  updateProductsFromSnapshot(snapshot);
     }, e => console.warn('Firestore realtime update failed', e));
   } catch (e) {
     console.warn('Failed to subscribe to Firestore updates', e);
@@ -4220,7 +4221,7 @@ function addProduct() {
   if (!title) { showToast('Title is required'); return; }
   const price = parseFloat(document.getElementById('new-price').value);
   if (!price) { showToast('Price is required'); return; }
-  const newId = Math.max(...PRODUCTS.map(p=>p.id), 200) + 1;
+  const newId = Math.max(...PRODUCTS.map(p => Number(p.id)).filter(n => !isNaN(n)), 200) + 1;
   const product = {
     id: newId,
     title,
@@ -4367,7 +4368,7 @@ function importFromLink() {
 }
 function confirmImport() {
   if (!importBuffer) return;
-  const newId = Math.max(...PRODUCTS.map(p=>p.id), 200) + 1;
+  const newId = Math.max(...PRODUCTS.map(p => Number(p.id)).filter(n => !isNaN(n)), 200) + 1;
   importBuffer.id = newId;
   importBuffer.isNew = true;
   importBuffer.createdAt = Date.now();
@@ -4389,7 +4390,7 @@ function importFromJSON() {
     const arr = JSON.parse(raw);
     if (!Array.isArray(arr)) { showToast('JSON must be an array'); return; }
     let added = 0;
-    let maxId = Math.max(...PRODUCTS.map(p=>p.id), 200);
+    let maxId = Math.max(...PRODUCTS.map(p => Number(p.id)).filter(n => !isNaN(n)), 200);
     arr.forEach(p => {
       maxId++;
       const prod = {...p, id: maxId, agents: p.agents || [p.agent||'Kakobuy'], isNew:true, createdAt: Date.now()};
