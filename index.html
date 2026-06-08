@@ -1872,6 +1872,8 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 // ═══════════════════════════════════════════════════════
 // BRANDS & CATEGORIES
 // ═══════════════════════════════════════════════════════
+let PRODUCTS = [];
+let MASE_PRODUCTS = [];
 const BRANDS = ['Adidas','Nike Running','Under Armour','Stone Island','CP Company','Canada Goose','Casablanca','Burberry','Gucci','Ralph Lauren','Louis Vuitton','Essentials','Fendi','Moncler','Dior','Amiri','Rick Owens','Maison Margiela','Enfants Riches Déprimés','Hysteric Glamour','Acne Studios','Japan Style','Prada','Balenciaga','Chanel','Asics','Saucony','On Cloud'];
 const CATS = ['Sneakers','Shoes','T-shirts','Hoodies','Jackets','Pants','Bags','Accessories','Jewelry','Sportswear','Sweaters','Boots & Heels','Misc'];
 
@@ -1938,40 +1940,6 @@ const AGENT_LINKS = {
   'Acbuy':   {url:'https://www.acbuy.com',    label:'Buy on Acbuy',   sub:'acbuy.com',    color:'#1abc9c'},
   'UsFans':  {url:'https://www.usfans.com',   label:'Buy on UsFans',  sub:'usfans.com',   color:'#e67e22'},
 };
-
-// ═══════════════════════════════════════════════════════
-// PRODUCTS DATA
-// ═══════════════════════════════════════════════════════
-const MASE_PRODUCTS = [
-  {id:101,title:'Jordan 5 x Off-White "Sail"',cat:'Sneakers',brand:'Nike Running',price:95,agents:['Kakobuy','Litbuy'],desc:'Near-perfect construction. Correct sole colour, clean stitching, right sail tone. Highly recommended.',rating:'4.9',qc:18,isNew:true,isTrending:true},
-  {id:102,title:'Nike Air Force 1 Low Triple White',cat:'Sneakers',brand:'Nike Running',price:55,agents:['Kakobuy','Acbuy'],desc:'Crisp all-white colourway, correct leather texture, accurate swoosh placement.',rating:'4.8',qc:22,isTrending:true},
-  {id:103,title:'Stone Island Nylon Metal Jacket',cat:'Jackets',brand:'Stone Island',price:135,agents:['Kakobuy','Litbuy','Acbuy'],desc:'Reflective nylon-metal fabric, working compass badge, correct cut and silhouette.',rating:'4.9',qc:14,isNew:true},
-  {id:104,title:'Essentials Fear of God Hoodie',cat:'Hoodies',brand:'Essentials',price:58,agents:['Kakobuy','Mulebuy'],desc:'Heavyweight fleece, correct font on chest, oversized fit as expected.',rating:'4.8',qc:30,isTrending:true},
-  {id:105,title:'Moncler Maya 70 Down Jacket',cat:'Jackets',brand:'Moncler',price:165,agents:['Kakobuy','Litbuy'],desc:'800-fill duck down, correct badge placement, working internal pockets, accurate arm logo.',rating:'4.9',qc:25},
-  {id:106,title:'Balenciaga Triple S Triple White',cat:'Sneakers',brand:'Balenciaga',price:88,agents:['Acbuy','Mulebuy'],desc:'Layered sole construction, correct weight, proper tongue branding.',rating:'4.7',qc:16,isNew:true},
-  {id:107,title:'Gucci GG Monogram Tote',cat:'Bags',brand:'Gucci',price:110,agents:['Kakobuy','Acbuy'],desc:'Canvas feel accurate, correct GG pattern alignment, functional hardware.',rating:'4.8',qc:12},
-  {id:108,title:'Rick Owens DRKSHDW Ramones',cat:'Sneakers',brand:'Rick Owens',price:105,agents:['Litbuy','Acbuy'],desc:'Correct sole shape and heel construction, proper side branding, clean leather upper.',rating:'4.9',qc:9,isNew:true},
-  {id:109,title:'CP Company Goggle Jacket',cat:'Jackets',brand:'CP Company',price:142,agents:['Kakobuy','Litbuy'],desc:'Iconic goggle lens in hood functional, lens unit lens glass clear, accurate OG fit.',rating:'4.8',qc:19,isTrending:true},
-  {id:110,title:'Prada Re-Nylon Bomber',cat:'Jackets',brand:'Prada',price:128,agents:['Acbuy','Kakobuy'],desc:'Re-nylon material quality convincing, triangle logo accurate, zip closure firm.',rating:'4.7',qc:11},
-  {id:111,title:'Dior B27 Low Sneaker',cat:'Sneakers',brand:'Dior',price:115,agents:['Kakobuy','Litbuy'],desc:'Oblique canvas upper correct, CD logo proper, sole shape accurate.',rating:'4.8',qc:14,isTrending:true},
-  {id:112,title:'Acne Studios Face Sweatshirt',cat:'Hoodies',brand:'Acne Studios',price:68,agents:['Acbuy','Mulebuy'],desc:'Face patch correctly stitched, heavyweight fleece quality, boxy fit accurate.',rating:'4.7',qc:8,isNew:true},
-  {id:113,title:'Canada Goose Expedition Parka',cat:'Jackets',brand:'Canada Goose',price:178,agents:['Kakobuy','Litbuy','Acbuy'],desc:'Correct fur ruff trim, working velcro storm cuffs, accurate patch placement.',rating:'4.9',qc:21},
-  {id:114,title:'Louis Vuitton Damier Keepall 50',cat:'Bags',brand:'Louis Vuitton',price:135,agents:['Acbuy','Kakobuy'],desc:'Damier pattern alignment correct, leather trim quality good, functioning lock hardware.',rating:'4.8',qc:16},
-  {id:115,title:'Maison Margiela Tabi Split-Toe Boot',cat:'Boots & Heels',brand:'Maison Margiela',price:118,agents:['Litbuy','Acbuy'],desc:'Iconic split-toe silhouette accurate, leather quality convincing, correct heel shape.',rating:'4.9',qc:10,isNew:true},
-  {id:116,title:'Asics Gel-Kayano 14',cat:'Sneakers',brand:'Asics',price:62,agents:['Kakobuy','Mulebuy'],desc:'Gel unit visible, correct upper structure, Asics branding accurate.',rating:'4.8',qc:20,isTrending:true},
-  {id:117,title:'Saucony Shadow 6000',cat:'Sneakers',brand:'Saucony',price:58,agents:['Acbuy','Litbuy'],desc:'Correct suede/mesh upper, accurate S-logo, proper toe box shape.',rating:'4.7',qc:13},
-  {id:118,title:'On Cloud Cloudmonster',cat:'Sneakers',brand:'On Cloud',price:72,agents:['Kakobuy','Acbuy'],desc:'CloudTec sole construction convincing, correct upper mesh, proper heel form.',rating:'4.8',qc:17,isNew:true},
-  {id:119,title:'Ralph Lauren Polo Bear Knit Sweater',cat:'Sweaters',brand:'Ralph Lauren',price:75,agents:['Litbuy','Mulebuy'],desc:'Bear embroidery detail correct, knit weight appropriate, correct collar rib.',rating:'4.7',qc:9,isTrending:true},
-  {id:120,title:'Burberry Check Scarf',cat:'Accessories',brand:'Burberry',price:48,agents:['Acbuy','Kakobuy'],desc:'Iconic camel check correct, cashmere-feel material, correct fringe length.',rating:'4.8',qc:6},
-  {id:121,title:'Amiri MX1 Jeans Distressed',cat:'Pants',brand:'Amiri',price:88,agents:['Kakobuy','Litbuy'],desc:'Distressing pattern correct, leather knee patch accurate, patch leather quality good.',rating:'4.9',qc:12,isNew:true},
-  {id:122,title:'Fendi FF Monogram Tote',cat:'Bags',brand:'Fendi',price:98,agents:['Acbuy','Kakobuy'],desc:'FF Jacquard pattern accurate, correct canvas weave, working zippers.',rating:'4.7',qc:8},
-  {id:123,title:'Adidas Samba OG White',cat:'Sneakers',brand:'Adidas',price:52,agents:['Kakobuy','Acbuy','Litbuy'],desc:'Iconic terrace silhouette correct, gum sole colour accurate, clean leather upper.',rating:'4.8',qc:28,isTrending:true},
-  {id:124,title:'Under Armour Project Rock 6',cat:'Sneakers',brand:'Under Armour',price:68,agents:['Mulebuy','Acbuy'],desc:'UA Flow sole technology correct, Project Rock branding accurate, solid build.',rating:'4.6',qc:7,isNew:true},
-  {id:125,title:'Casablanca Casa Way Shirt',cat:'T-shirts',brand:'Casablanca',price:72,agents:['Litbuy','Acbuy'],desc:'Printed graphic correct, silk-feel fabric quality, correct button placement.',rating:'4.8',qc:11,isTrending:true},
-];
-
-let PRODUCTS = [...MASE_PRODUCTS.map(p => ({...p, agent: p.agents[0]}))];
-
 // === FIREBASE / FIRESTORE CONFIGURATION ===
 // La configuration est chargée depuis firebase-config.js (fichier externe, non versionné)
 // Si le fichier n'existe pas, utilise des placeholders
