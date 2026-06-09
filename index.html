@@ -3948,12 +3948,26 @@ let newMediaList = [];
 function handleNewMediaFile(input) {
   Array.from(input.files).forEach(file => {
     if (file.size > 50*1024*1024) { showToast('File too large — max 50MB'); return; }
-   const storageRef = firebase.storage().ref();
-const fileRef = storageRef.child('products/' + Date.now() + '_' + file.name);
-fileRef.put(file).then(snapshot => snapshot.ref.getDownloadURL()).then(url => {
-  newMediaList.push({src: url, type: file.type.startsWith('video') ? 'video' : 'image'});
-  renderNewMediaThumbs();
-}).catch(e => console.warn('Upload failed', e));
+    showToast('Upload en cours...');
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'repfashioncult');
+    formData.append('cloud_name', 'dbf6liqro');
+    fetch('https://api.cloudinary.com/v1_1/dbf6liqro/auto/upload', {
+      method: 'POST',
+      body: formData
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (!data.secure_url) throw new Error(data.error?.message || 'Upload failed');
+      newMediaList.push({src: data.secure_url, type: file.type.startsWith('video') ? 'video' : 'image'});
+      renderNewMediaThumbs();
+      showToast('Image ajoutée ✓');
+    })
+    .catch(e => {
+      console.warn('Upload failed', e);
+      showToast('Erreur upload: ' + e.message);
+    });
   });
 }
 function handleNewMediaDrop(e) {
