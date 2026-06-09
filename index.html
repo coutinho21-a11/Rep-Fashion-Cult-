@@ -311,6 +311,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .ap-action-btn.del:hover{color:var(--red);border-color:var(--red);}
 .ap-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .ap-form-full{grid-column:1/-1;}
+.tr.drag-over { outline: 2px solid var(--accent); background: rgba(255,255,255,0.05); }
 .img-upload-zone{border:2px dashed var(--border);border-radius:4px;padding:20px;text-align:center;cursor:pointer;transition:border-color .2s;position:relative;}
 .img-upload-zone:hover,.img-upload-zone.drag{border-color:var(--red);}
 .img-upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
@@ -4221,7 +4222,8 @@ function renderAdminTable(q='') {
   if (!tbody) return;
   const items = q ? PRODUCTS.filter(p => (p.title+p.cat+p.agent).toLowerCase().includes(q.toLowerCase())) : PRODUCTS;
   tbody.innerHTML = items.map(p =>
-    `<tr>
+    `<tr draggable="true" data-id="${p.id}" style="cursor:grab;">
+      <td style="cursor:grab;">⠿</td>
       <td>${p.id}</td>
       <td><span class="ap-table-icon" style="opacity:.5">${getCatIcon(p.cat).replace('36" height="36"','18" height="18"')}</span></td>
       <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.title}</td>
@@ -4236,8 +4238,37 @@ function renderAdminTable(q='') {
       </td>
     </tr>`
   ).join('');
-}
 
+  // Drag & drop logic
+  let dragSrc = null;
+  tbody.querySelectorAll('tr').forEach(row => {
+    row.addEventListener('dragstart', e => {
+      dragSrc = row;
+      row.style.opacity = '0.4';
+    });
+    row.addEventListener('dragend', e => {
+      row.style.opacity = '1';
+      tbody.querySelectorAll('tr').forEach(r => r.classList.remove('drag-over'));
+    });
+    row.addEventListener('dragover', e => {
+      e.preventDefault();
+      tbody.querySelectorAll('tr').forEach(r => r.classList.remove('drag-over'));
+      row.classList.add('drag-over');
+    });
+    row.addEventListener('drop', e => {
+      e.preventDefault();
+      if (dragSrc === row) return;
+      const fromId = parseInt(dragSrc.dataset.id);
+      const toId = parseInt(row.dataset.id);
+      const fromIdx = PRODUCTS.findIndex(p => p.id === fromId);
+      const toIdx = PRODUCTS.findIndex(p => p.id === toId);
+      PRODUCTS.splice(toIdx, 0, PRODUCTS.splice(fromIdx, 1)[0]);
+      MASE_PRODUCTS = [...PRODUCTS];
+      saveProducts();
+      renderAdminTable(q);
+    });
+  });
+}
 function addProduct() {
   const title = document.getElementById('new-title').value.trim();
   if (!title) { showToast('Title is required'); return; }
